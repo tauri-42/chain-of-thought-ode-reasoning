@@ -1,8 +1,4 @@
-# Hopfield ODE Solver
 
-This is a small, dependency-free C++20 implementation of a continuous-time
-Hopfield network. It is organized around the learning milestones from the
-project brief:
 
 - `Vector<T>` and `Matrix<T>` provide the basic numerical operations.
 - `Neuron<T>` models one continuous-time neuron.
@@ -10,12 +6,7 @@ project brief:
 - `EulerIntegrator<T>` and `RK4Integrator<T>` integrate any vector ODE with the
   signature `Vector<T>(T time, const Vector<T>& state)`.
 
-The implementation uses standard-library containers so it can compile with the
-available compiler immediately. The linear algebra types are intentionally
-isolated in `include/hopfield/Vector.hpp` and `include/hopfield/Matrix.hpp`;
-they are the only files that need to change when swapping in Eigen later.
-
-## Build and run
+## uild and run
 
 ```sh
 cd cpp
