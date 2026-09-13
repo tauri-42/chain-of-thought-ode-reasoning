@@ -1,41 +1,26 @@
-# Hopfield ODE Solver
+#chain of thought as ode representation
 
-This is a small, dependency-free C++20 implementation of a continuous-time
-Hopfield network. It is organized around the learning milestones from the
-project brief:
+research question: Given some vector a(t) that represents the weights of all attributions prior at some time t, use some continuous time ODE F(x) to model the behavior of a(t) for different reasoning convergences
 
-- `Vector<T>` and `Matrix<T>` provide the basic numerical operations.
-- `Neuron<T>` models one continuous-time neuron.
-- `HopfieldNetwork<T>` owns neurons, weights, biases, and the Hopfield energy.
-- `EulerIntegrator<T>` and `RK4Integrator<T>` integrate any vector ODE with the
-  signature `Vector<T>(T time, const Vector<T>& state)`.
 
-The implementation uses standard-library containers so it can compile with the
-available compiler immediately. The linear algebra types are intentionally
-isolated in `include/hopfield/Vector.hpp` and `include/hopfield/Matrix.hpp`;
-they are the only files that need to change when swapping in Eigen later.
+#part 1: attribution tracking
+attribution is tracked through a feedforward transformer using huggingface's ___ model. this is done in google colab and generates large matrix datasets of each attribution step (weights). 
 
-## Build and run
+we export this as a h5py file into a c++ ode solver
 
-```sh
-cd cpp
-make
-./build/hopfield_demo
-```
+#part 2 ode solver
+ode solver is custom built because i want it to account for hopfield odes, which is what this research is based on. classes present: 
 
-Or with CMake:
+- integrator
+- neuron
+- vector
+- matrix
 
-```sh
-cmake -S cpp -B cpp/build-cmake
-cmake --build cpp/build-cmake
-ctest --test-dir cpp/build-cmake --output-on-failure
-```
+and analysis classes: 
 
-The Hopfield equation used by `Neuron<T>` is:
+- jacobian
+- fixed point
+- stability
 
-```text
-tau * dx/dt = -x + activation(input + bias)
-```
+these classify each system in some way. 
 
-The demo stores the bipolar pattern `[+1, -1, +1]`, integrates from a noisy
-initial state, and prints the state and energy before and after integration.
